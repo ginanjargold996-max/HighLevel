@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yukino - Partner Keuangan Rapi</title>
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* === BASE VARIABLES (Hitam Putih / Monochrome) === */
+    :root {
+      --bg-body: #E5E7EB; 
+      --bg-app: #F3F4F6;
+      --card-white: #FFFFFF;
+      --card-dark: #1F1F1F; 
+      --card-dark-sub: #2D2D2D;
+      --text-dark: #111827;
+      --text-muted: #6B7280;
+      --text-light: #F9FAFB;
+      --border-color: #E5E7EB;
+      
+      --primary: #111827; 
+      --primary-hover: #374151;
+      
+      --radius-lg: 24px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+      --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+      
+      --success: #10B981;
+      --danger: #EF4444;
+      --warning: #F59E0B;
+      --info: #3B82F6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    html, body { height: 100%; }
+    body { background: var(--bg-body); color: var(--text-dark); font-size: 14px; overflow: hidden; }
+    .hidden { display: none !important; }
+    a { text-decoration: none; color: inherit; }
+
+    /* =========================================
+       1. LOGIN SCREEN
+       ========================================= */
+    .login-split { display: flex; height: 100%; width: 100%; overflow-y: auto; }
+    .login-left { flex: 1.1; background: var(--card-dark); color: white; padding: 60px 80px; display: flex; flex-direction: column; justify-content: space-between; }
+    .login-brand { display: flex; align-items: center; gap: 16px; margin-bottom: 60px; }
+    .login-brand .logo-box { width: 52px; height: 52px; background: white; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+    .login-brand .logo-box i { color: var(--card-dark); width: 28px; height: 28px; }
+    .login-brand-text h1 { font-size: 28px; font-weight: 700; line-height: 1.1; }
+    .login-brand-text p { font-size: 13px; color: #A1A1AA; margin-top: 4px; }
+    .login-hero { max-width: 540px; }
+    .login-hero h2 { font-size: 42px; font-weight: 700; line-height: 1.2; margin-bottom: 24px; }
+    .login-hero > p { font-size: 16px; line-height: 1.6; color: #A1A1AA; margin-bottom: 48px; }
+    
+    .login-right { flex: 1; background: #F9FAFB; display: flex; align-items: center; justify-content: center; padding: 40px; position: relative; }
+    .login-form-container { width: 100%; max-width: 440px; }
+    .login-form-header h3 { font-size: 32px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px; }
+    .input-group { margin-bottom: 20px; }
+    .input-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+    .input-wrapper input { width: 100%; padding: 14px 16px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 15px; }
+    .btn-login { width: 100%; padding: 16px; background: var(--primary); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; margin-top: 16px; }
+    .demo-box { border: 1px solid var(--border-color); border-radius: 12px; background: white; padding: 20px; margin-top: 32px; cursor: pointer; }
+    .demo-box-header { display: flex; align-items: center; gap: 8px; color: var(--success); font-size: 12px; font-weight: 700; margin-bottom: 16px; }
+    .demo-item { padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; }
+    .demo-item:hover { border-color: var(--primary); background: #F9FAFB; }
+
+    /* =========================================
+       2. MAIN APP LAYOUT
+       ========================================= */
+    #app-screen { display: flex; height: 100vh; padding: 24px; max-width: 1440px; margin: 0 auto; gap: 24px; background: var(--bg-body); background-image: radial-gradient(circle at top left, #ffffff 0%, var(--bg-body) 100%); }
+    
+    /* SIDEBAR */
+    .sidebar {
+      width: 260px; background: var(--card-white); border-radius: var(--radius-lg);
+      padding: 24px 16px 24px 24px; display: flex; flex-direction: column; 
+      box-shadow: var(--shadow-soft); flex-shrink: 0; overflow-y: auto; min-height: 0;
+    }
+    .sidebar::-webkit-scrollbar { width: 6px; }
+    .sidebar::-webkit-scrollbar-thumb { background: #E5E7EB; border-radius: 10px; }
+    .brand { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; padding-left: 8px; }
+    .brand-icon { width: 32px; height: 32px; background: var(--primary); border-radius: 8px; color: white; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+    .brand h2 { font-size: 20px; letter-spacing: -0.5px; }
+    .nav-section { margin-bottom: 24px; }
+    .nav-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-left: 12px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border-radius: var(--radius-sm); color: var(--text-muted); font-weight: 500; cursor: pointer; transition: 0.2s; margin-bottom: 2px; }
+    .nav-item:hover { background: #F9FAFB; color: var(--text-dark); }
+    .nav-item.active { background: var(--primary); color: white; }
+    .nav-item i { width: 18px; height: 18px; }
+    .sidebar-footer { margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border-color); }
+    .btn-logout { display: flex; align-items: center; gap: 12px; width: 100%; padding: 10px 12px; background: transparent; border: none; color: var(--text-muted); font-weight: 500; cursor: pointer; border-radius: var(--radius-sm); }
+    .btn-logout:hover { background: #FEE2E2; color: var(--danger); }
+
+    /* MAIN CONTENT */
+    .main-content { flex: 1; overflow-y: auto; padding-right: 8px; min-height: 0; }
+    .main-content::-webkit-scrollbar { width: 8px; }
+    .main-content::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 10px; }
+
+    /* TOPBAR */
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 32px; padding-top: 8px; }
+    .greeting h1 { font-size: 28px; font-weight: 600; letter-spacing: -1px; color: var(--text-dark); }
+    .top-actions { display: flex; align-items: center; gap: 16px; }
+    .search-bar { display: flex; align-items: center; gap: 8px; background: var(--card-white); border-radius: 99px; padding: 10px 16px; box-shadow: var(--shadow-soft); width: 240px; }
+    .search-bar input { border: none; background: transparent; outline: none; width: 100%; font-size: 13px; color: var(--text-dark); }
+    .icon-btn { width: 42px; height: 42px; border-radius: 50%; background: var(--card-white); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: var(--shadow-soft); }
+    .avatar { width: 42px; height: 42px; border-radius: 50%; background: url('https://i.pinimg.com/originals/e5/f9/67/e5f967318950de1a8f56e00348709648.gif') center/cover; border: 2px solid white; box-shadow: var(--shadow-soft); }
+
+    /* =========================================
+       3. PAGE HEADERS & CARDS
+       ========================================= */
+    .content-area { padding-bottom: 40px; }
+    .page-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px; }
+    .page-header-title .subtitle { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+    .page-header-title h1 { font-size: 32px; font-weight: 700; color: var(--text-dark); letter-spacing: -1px; margin-bottom: 8px; }
+    .page-header-title p { color: var(--text-muted); font-size: 14px; }
+    
+    .btn-primary { background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-outline { background: white; border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; color: var(--text-dark); }
+    .btn-outline:hover { background: #F9FAFB; }
+
+    .card-white { background: var(--card-white); box-shadow: var(--shadow-soft); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: 24px; }
+    
+    /* =========================================
+       4. DASHBOARD SPECIFIC STYLES
+       ========================================= */
+    .grid-top { display: grid; grid-template-columns: 2.2fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
+    .grid-mid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 24px; margin-bottom: 24px; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .section-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: var(--text-muted); text-transform: uppercase; }
+    .section-link { font-size: 13px; color: var(--text-dark); font-weight: 600; }
+    .card-dark { background: var(--card-dark); color: white; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; border-radius: var(--radius-lg); }
+    .focus-card .card-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #A1A1AA; text-transform: uppercase; margin-bottom: 24px; }
+    .focus-content h2 { font-size: 24px; font-weight: 700; line-height: 1.3; margin-bottom: 8px; color: white; }
+    .focus-content p { font-size: 14px; color: #A1A1AA; margin-bottom: 24px; }
+    .focus-stats { display: flex; gap: 48px; margin-bottom: 32px; }
+    .focus-stat-item h3 { font-size: 36px; font-weight: 700; line-height: 1; margin-bottom: 4px; color: white; }
+    .focus-stat-item p { font-size: 12px; color: #A1A1AA; }
+    .btn-focus { background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.2); padding: 12px 20px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; }
+    .focus-footer { display: flex; justify-content: space-between; margin-top: 32px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 12px; color: #A1A1AA; }
+    .quick-access-list { display: flex; flex-direction: column; gap: 4px; }
+    .quick-access-item { display: flex; align-items: center; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
+    .quick-access-item:last-child { border-bottom: none; }
+    .quick-access-item:hover { transform: translateX(4px); }
+    .qa-icon { width: 40px; height: 40px; border-radius: 50%; background: #F3F4F6; display: flex; align-items: center; justify-content: center; color: var(--text-dark); }
+    .qa-text h4 { font-size: 14px; font-weight: 600; color: var(--text-dark); margin-bottom: 2px; }
+    .qa-text p { font-size: 12px; color: var(--text-muted); }
+    .qa-arrow { margin-left: auto; color: var(--text-muted); }
+    .stat-card { background: white; padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--border-color); box-shadow: var(--shadow-soft); }
+    .stat-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .stat-icon.gray { background: #F3F4F6; color: var(--text-dark); }
+    .stat-icon.yellow { background: #FEF3C7; color: #D97706; }
+    .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-bottom: 8px; }
+    .stat-value { font-size: 32px; font-weight: 700; color: var(--text-dark); line-height: 1; margin-bottom: 8px; letter-spacing: -1px; }
+    .stat-desc { font-size: 12px; color: var(--text-muted); }
+    .progress-bar-container { width: 100%; height: 12px; border-radius: 6px; display: flex; overflow: hidden; margin-bottom: 16px; background: #F3F4F6; }
+    .progress-legend { display: flex; flex-wrap: wrap; gap: 16px; font-size: 12px; color: var(--text-muted); }
+    .legend-item { display: flex; align-items: center; gap: 6px; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .list-container { display: flex; flex-direction: column; gap: 16px; }
+    .list-item { display: flex; align-items: flex-start; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border-color); }
+    .list-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .list-date { width: 48px; height: 48px; background: #F3F4F6; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; }
+    .list-date strong { font-size: 16px; color: var(--text-dark); line-height: 1; }
+    .list-date span { font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-top: 2px; }
+    .list-content { flex: 1; }
+    .list-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .list-content p { font-size: 12px; color: var(--text-muted); margin-bottom: 8px; }
+    .progress-bar-small { width: 100%; height: 6px; background: #E5E7EB; border-radius: 3px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 3px; background: var(--text-dark); }
+    .workload-item { display: flex; align-items: center; gap: 16px; margin-bottom: 20px; }
+    .workload-name { width: 100px; font-size: 13px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .workload-bar-bg { flex: 1; height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+    .workload-bar-fill { height: 100%; background: var(--text-dark); border-radius: 4px; }
+    .workload-count { width: 20px; text-align: right; font-weight: 600; font-size: 13px; }
+    .timeline { position: relative; padding-left: 20px; }
+    .timeline::before { content: ''; position: absolute; left: 10px; top: 0; bottom: 0; width: 2px; background: #E5E7EB; }
+    .timeline-item { position: relative; margin-bottom: 24px; }
+    .timeline-icon { position: absolute; left: -28px; top: 0; width: 20px; height: 20px; background: white; border: 2px solid #E5E7EB; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); }
+    .timeline-content h4 { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+    .timeline-content p { font-size: 12px; color: var(--text-muted); }
+
+    /* =========================================
+       5. ANTREAN REVIEW SPECIFIC STYLES
+       ========================================= */
+    .filter-container { display: flex; gap: 8px; padding: 16px 24px; border-bottom: 1px solid var(--border-color); overflow-x: auto; }
+    .filter-btn { padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border-color); background: transparent; color: var(--text-muted); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+    .filter-btn:hover { background: #F9FAFB; color: var(--text-dark); }
+    .filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+    .table-responsive { width: 100%; overflow-x: auto; border-bottom-left-radius: var(--radius-lg); border-bottom-right-radius: var(--radius-lg); }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th { padding: 16px 24px; font-size: 12px; text-transform: uppercase; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color); background: #F9FAFB; }
+    td { padding: 20px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; font-size: 14px; color: var(--text-dark); }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #F9FAFB; }
+    .badge { padding: 6px 12px; border-radius: 99px; font-size: 12px; font-weight: 600; display: inline-block; white-space: nowrap; }
+    .badge-gray { background: #F3F4F6; color: var(--text-dark); }
+    .badge-red { background: #FEE2E2; color: #DC2626; }
+    .empty-state-row td { text-align: center; padding: 60px 20px; color: var(--text-muted); font-size: 15px; }
+
+    /* =========================================
+       6. PENGINGAT SPECIFIC STYLES
+       ========================================= */
+    .btn-danger { background: #B91C1C; color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+    .btn-danger:hover { background: #991B1B; }
+    .grid-reminder { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; margin-bottom: 24px; align-items: start; }
+    .table-reminder th { background: #F9FAFB; }
+    .table-reminder td { padding: 16px 24px; }
+    .client-info strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .client-info span { font-size: 12px; color: var(--text-muted); }
+    .date-info strong { display: block; font-size: 14px; margin-bottom: 4px; }
+    .date-info span { font-size: 12px; color: var(--text-muted); }
+    .btn-send { background: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; text-align: center; line-height: 1.4; color: var(--text-dark); }
+    .btn-send:hover { background: #F9FAFB; }
+    .rule-item { display: flex; align-items: flex-start; gap: 12px; padding: 16px 0; border-bottom: 1px solid var(--border-color); }
+    .rule-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .rule-checkbox { margin-top: 4px; width: 18px; height: 18px; accent-color: var(--primary); cursor: pointer; }
+    .rule-text h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .rule-text p { font-size: 12px; color: var(--text-muted); }
+    .log-list { display: flex; flex-direction: column; }
+    .log-item { display: flex; align-items: center; padding: 16px 0; border-bottom: 1px solid var(--border-color); }
+    .log-item:last-child { border-bottom: none; }
+    .log-time { width: 100px; font-size: 13px; color: var(--text-muted); font-weight: 500; }
+    .log-content { flex: 1; }
+    .log-content h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+    .log-content p { font-size: 12px; color: var(--text-muted); }
+    .log-channel { font-size: 13px; color: var(--text-muted); text-align: right; width: 150px; }
+
+    /* =========================================
+       7. PESAN (CHAT) SPECIFIC STYLES
+       ========================================= */
+    .chat-layout { display: grid; grid-template-columns: 320px 1fr; gap: 24px; height: calc(100vh - 180px); }
+    .chat-sidebar { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+    .chat-list { overflow-y: auto; flex: 1; }
+    .chat-item { padding: 20px 24px; border-bottom: 1px solid var(--border-color); cursor: pointer; transition: 0.2s; }
+    .chat-item:hover { background: #F9FAFB; }
+    .chat-item.active { background: #F3F4F6; border-left: 4px solid var(--primary); padding-left: 20px; }
+    .chat-item h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; color: var(--text-dark); }
+    .chat-item p { font-size: 13px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .chat-window { background: white; border-radius: var(--radius-lg); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; }
+    .chat-header { padding: 20px 24px; border-bottom: 1px solid var(--border-color); }
+    .chat-header h3 { font-size: 18px; font-weight: 700; color: var(--text-dark); }
+    .chat-body { flex: 1; padding: 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; background: #FAFAFA; }
+    .chat-bubble { max-width: 80%; display: flex; flex-direction: column; gap: 4px; }
+    .chat-bubble.outgoing { align-self: flex-end; align-items: flex-end; }
+    .chat-bubble.incoming { align-self: flex-start; align-items: flex-start; }
+    .chat-meta { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+    .chat-text { padding: 14px 20px; border-radius: 16px; font-size: 14px; line-height: 1.5; }
+    .outgoing .chat-text { background: var(--primary); color: white; border-bottom-right-radius: 4px; }
+    .incoming .chat-text { background: #E5E7EB; color: var(--text-dark); border-bottom-left-radius: 4px; }
+    .chat-input-area { padding: 20px 24px; border-top: 1px solid var(--border-color); background: white; }
+    .chat-input-area label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 8px; color: var(--text-muted); }
+    .chat-input { width: 100%; padding: 16px; border: 1px solid var(--border-color); border-radius: 12px; font-family: inherit; font-size: 14px; resize: none; min-height: 80px; margin-bottom: 16px; }
+    .chat-input:focus { outline: none; border-color: var(--primary); }
+    .btn-send-chat { background: var(--primary); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; }
+    .btn-send-chat:hover { background: var(--primary-hover); }
+    .empty-chat { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-muted); text-align: center; }
+    .empty-chat i { width: 48px; height: 48px; margin-bottom: 16px; opacity: 0.5; }
+
+    /* =========================================
+       8. KLIEN SPECIFIC STYLES
+       ========================================= */
+    .client-table th, .client-table td { padding: 16px 24px; }
+    .client-table td { vertical-align: top; }
+    .badge-outline { border: 1px dashed var(--border-color); background: transparent; color: var(--text-muted); }
+    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-content { background: white; border-radius: 20px; width: 100%; max-width: 600px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); overflow: hidden; animation: fadeIn 0.2s ease-out; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-header { padding: 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); }
+    .modal-header h3 { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+    .modal-close { background: #F3F4F6; border: none; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text-dark); transition: 0.2s; }
+    .modal-close:hover { background: #E5E7EB; }
+    .modal-body { padding: 24px; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; color: var(--text-dark); }
+    .form-control { width: 100%; padding: 12px 16px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 14px; font-family: inherit; background: white; transition: 0.2s; }
+    .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(17,24,39,0.1); }
+    .form-row { display: grid; grid-template-columns: 120px 1fr; gap: 16px; }
+    .helper-text { font-size: 13px; color: var(--text-muted); margin-top: 12px; margin-bottom: 24px; }
+    .modal-footer { padding: 0 24px 24px 24px; display: flex; justify-content: flex-start; }
+
+    /* =========================================
+       9. LAYANAN & PENUGASAN SPECIFIC STYLES
+       ========================================= */
+    .sub-tabs-container { background: #F3F4F6; border-radius: 12px; padding: 6px; display: inline-flex; gap: 4px; margin-bottom: 24px; }
+    .sub-tab { padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-muted); transition: 0.2s; border: none; background: transparent; }
+    .sub-tab:hover { color: var(--text-dark); }
+    .sub-tab.active { background: white; color: var(--text-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-weight: 600; }
+    .table-layanan th, .table-layanan td { padding: 16px 24px; }
+    .layanan-info h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+    .layanan-info p { font-size: 13px; color: var(--text-muted); line-height: 1.4; }
+    .paket-info h4 { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+    .paket-info p { font-size: 13px; color: var(--text-muted); line-height: 1.4; max-width: 250px; }
+    .tag-container { display: flex; flex-wrap: wrap; gap: 6px; max-width: 300px; }
+    .tag { background: #F3F4F6; color: var(--text-dark); padding: 4px 10px; border-radius: 99px; font-size: 12px; font-weight: 500; }
+    .input-harga { width: 120px; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 14px; text-align: right; }
+    .form-select-sm { padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 6px; font-size: 13px; background: white; min-width: 200px; }
+
+    /* =========================================
+       10. TIM & MITRA SPECIFIC STYLES
+       ========================================= */
+    .tim-table th, .tim-table td { padding: 16px 24px; }
+    .tim-table h3 { font-size: 18px; font-weight: 600; margin-bottom: 16px; }
+    .card-tim { padding: 0; overflow: hidden; margin-bottom: 24px; }
+    .card-tim-header { padding: 24px 24px 16px 24px; }
+    .note-text { font-size: 13px; color: var(--text-muted); margin-top: 16px; line-height: 1.5; }
+
+    /* =========================================
+       11. DOKUMEN SPECIFIC STYLES
+       ========================================= */
+    .filter-bar { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border-color); flex-wrap: wrap; gap: 16px; }
+    .filter-group { display: flex; align-items: center; gap: 12px; }
+    .filter-group label { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+    .table-dokumen th, .table-dokumen td { padding: 16px 24px; }
+    .table-dokumen td { vertical-align: middle; }
+    .file-icon { color: var(--text-muted); margin-right: 8px; width: 16px; height: 16px; display: inline-block; vertical-align: middle; }
+
+    /* =========================================
+       12. INVOICE SPECIFIC STYLES
+       ========================================= */
+    .invoice-table th, .invoice-table td { padding: 16px 24px; }
+    .modal-invoice { max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; }
+    .modal-invoice .modal-body { overflow-y: auto; }
+    .modal-invoice .modal-footer { padding: 24px; border-top: 1px solid var(--border-color); display: flex; gap: 12px; background: white; }
+    .btn-outline { background: white; border: 1px solid var(--border-color); padding: 10px 20px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; color: var(--text-dark); }
+    .btn-outline:hover { background: #F9FAFB; }
+    .invoice-grid-2 { display: grid; grid-template-columns: 1fr 150px; gap: 16px; }
+    .invoice-grid-3 { display: grid; grid-template-columns: 2fr 80px 150px 40px; gap: 12px; align-items: end; }
+    .invoice-summary { background: #F9FAFB; border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-top: 24px; }
+    .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: var(--text-muted); }
+    .summary-row.total { font-size: 16px; font-weight: 700; color: var(--text-dark); border-top: 1px solid var(--border-color); padding-top: 8px; margin-top: 8px; margin-bottom: 0; }
+    .checkbox-group { display: flex; align-items: center; gap: 8px; margin-top: 16px; }
+    .checkbox-group input { width: 16px; height: 16px; accent-color: var(--primary); }
+    .input-action-row { display: flex; gap: 12px; align-items: center; margin-top: 16px; }
+    .btn-manual { background: white; border: 1px solid var(--border-color); padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+    /* =========================================
+       13. KEUANGAN YUKINO SPECIFIC STYLES
+       ========================================= */
+    .keuangan-tabs { display: flex; gap: 8px; margin-bottom: 24px; background: #F3F4F6; padding: 6px; border-radius: 12px; overflow-x: auto; }
+    .keuangan-tab { padding: 10px 16px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: var(--text-muted); border: none; background: transparent; white-space: nowrap; transition: 0.2s; }
+    .keuangan-tab:hover { color: var(--text-dark); }
+    .keuangan-tab.active { background: white; color: var(--text-dark); box-shadow: 0 2px 4px rgba(0,0,0,0.05); font-weight: 600; }
+    .chart-placeholder { display: flex; align-items: flex-end; gap: 16px; height: 200px; padding-top: 20px; margin-bottom: 16px; }
+    .bar-group { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; }
+    .bars { display: flex; gap: 4px; align-items: flex-end; height: 150px; }
+    .bar-income { width: 16px; background: var(--text-dark); border-radius: 2px 2px 0 0; }
+    .bar-expense { width: 16px; background: #9CA3AF; border-radius: 2px 2px 0 0; }
+    .chart-label { font-size: 12px; color: var(--text-muted); }
+
+    /* =========================================
+       14. KEUANGAN KLIEN SPECIFIC STYLES
+       ========================================= */
+    .client-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .client-filter-btn { padding: 8px 16px; border-radius: 99px; border: 1px solid var(--border-color); background: white; color: var(--text-dark); font-size: 13px; font-weight: 500; cursor: pointer; transition: 0.2s; }
+    .client-filter-btn.active { background: var(--text-dark); color: white; border-color: var(--text-dark); }
+    
+    .akses-table th, .akses-table td { padding: 20px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+    .akses-table th { background: #F9FAFB; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--text-muted); }
+    .akses-table td:first-child { font-weight: 500; }
+    .akses-table td:first-child span { display: block; font-size: 13px; color: var(--text-muted); font-weight: 400; margin-top: 4px; }
+    .akses-table input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--text-dark); cursor: pointer; }
+    .akses-table input[type="checkbox"]:disabled { accent-color: #D1D5DB; cursor: not-allowed; }
+    
+    .log-timeline { display: flex; flex-direction: column; gap: 20px; margin-top: 24px; }
+    .log-timeline-item { display: flex; gap: 16px; align-items: flex-start; }
+    .log-icon { width: 32px; height: 32px; background: #F3F4F6; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-dark); flex-shrink: 0; }
+    .log-text h4 { font-size: 14px; font-weight: 500; color: var(--text-dark); margin-bottom: 4px; }
+    .log-text p { font-size: 12px; color: var(--text-muted); }
+
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN SCREEN -->
+  <div id="login-screen" class="login-split">
+    <div class="login-left">
+      <div>
+        <div class="login-brand">
+          <div class="logo-box"><i data-lucide="layers"></i></div>
+          <div class="login-brand-text">
+            <h1>Yukino</h1>
+            <p>Partner Keuangan Rapi</p>
+          </div>
+        </div>
+        <div class="login-hero">
+          <h2>Keuangan usaha Anda, tertata dan terpantau.</h2>
+          <p>Kirim data transaksi, pantau laporan yang tersusun otomatis, dan terima rekomendasi konsultan dalam satu portal.</p>
+        </div>
+      </div>
+    </div>
+    <div class="login-right">
+      <div class="login-form-container">
+        <div class="login-form-header">
+          <h3>Masuk ke Yukino</h3>
+          <p style="color:var(--text-muted); margin-bottom: 32px;">Silakan masuk menggunakan email dan kata sandi.</p>
+        </div>
+        <form onsubmit="event.preventDefault(); login();">
+          <div class="input-group">
+            <label>Email</label>
+            <div class="input-wrapper"><input type="email" placeholder="Alamat email Anda" required></div>
+          </div>
+          <div class="input-group">
+            <label>Kata sandi</label>
+            <div class="input-wrapper"><input type="password" placeholder="••••••••" required></div>
+          </div>
+          <button type="submit" class="btn-login">Masuk</button>
+        </form>
+        <div class="demo-box" onclick="login()">
+          <div class="demo-box-header"><i data-lucide="shield-check" style="width:16px;"></i> KLIK UNTUK MASUK (MODE DEMO)</div>
+          <div class="demo-item">
+            <div>
+              <h5 style="font-size:14px; font-weight:600;">Manda (Superuser)</h5>
+              <p style="font-size:13px; color:var(--text-muted);">manda@yukino.id</p>
+            </div>
+            <span style="font-size:12px; color:var(--text-muted);">Managing Director</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN APP -->
+  <div id="app-screen" class="hidden">
+    
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-icon"><i data-lucide="layers" style="color:white; width:16px;"></i></div>
+        <h2>Yukino</h2>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label">Ruang Kerja</p>
+        <a class="nav-item" id="nav-dashboard" onclick="switchTab(event, 'dashboard')"><i data-lucide="layout-dashboard"></i> Dasbor</a>
+        <a class="nav-item" id="nav-review" onclick="switchTab(event, 'review')"><i data-lucide="check-square"></i> Antrean Review</a>
+        <a class="nav-item" id="nav-reminders" onclick="switchTab(event, 'reminders')"><i data-lucide="clock"></i> Pengingat</a>
+        <a class="nav-item" id="nav-messages" onclick="switchTab(event, 'messages')"><i data-lucide="mail"></i> Pesan</a>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label">Klien & Layanan</p>
+        <a class="nav-item" id="nav-klien" onclick="switchTab(event, 'klien')"><i data-lucide="users"></i> Klien</a>
+        <a class="nav-item" id="nav-layanan" onclick="switchTab(event, 'layanan')"><i data-lucide="briefcase"></i> Layanan & Penugasan</a>
+        <a class="nav-item" id="nav-tim" onclick="switchTab(event, 'tim')"><i data-lucide="user-plus"></i> Tim & Mitra</a>
+        <a class="nav-item" id="nav-dokumen" onclick="switchTab(event, 'dokumen')"><i data-lucide="file-text"></i> Dokumen</a>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label">Keuangan</p>
+        <a class="nav-item" id="nav-invoice" onclick="switchTab(event, 'invoice')"><i data-lucide="receipt"></i> Invoice</a>
+        <a class="nav-item" id="nav-keuangan-yukino" onclick="switchTab(event, 'keuangan_yukino')"><i data-lucide="building"></i> Keuangan Yukino</a>
+        <a class="nav-item" id="nav-keuangan-klien" onclick="switchTab(event, 'keuangan_klien')"><i data-lucide="wallet"></i> Keuangan Klien</a>
+        <a class="nav-item" id="nav-akuntansi" onclick="switchTab(event, 'akuntansi')"><i data-lucide="bar-chart-2"></i> Akuntansi Klien</a>
+      </div>
+
+      <div class="nav-section">
+        <p class="nav-label">Sistem</p>
+        <a class="nav-item"><i data-lucide="settings"></i> Pengaturan</a>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="logout()"><i data-lucide="log-out"></i> Keluar</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <header class="topbar">
+        <div class="greeting">
+          <h1 id="page-greeting">Hi, Manda!</h1>
+        </div>
+        <div class="top-actions">
+          <div class="search-bar">
+            <i data-lucide="search" style="width:16px; color:var(--text-muted);"></i>
+            <input type="text" placeholder="Search...">
+          </div>
+          <button class="icon-btn"><i data-lucide="bell" style="width:18px;"></i></button>
+          <div class="avatar"></div>
+        </div>
+      </header>
+
+      <!-- RENDER AREA -->
+      <div class="content-area" id="content-area">
+        <!-- Rendered by JS -->
+      </div>
+    </main>
+  </div>
+
+  <!-- MODAL TAMBAH KLIEN -->
+  <div id="modal-tambah-klien" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tambah klien</h3>
+        <button class="modal-close" onclick="closeModal('modal-tambah-klien')"><i data-lucide="x" style="width:18px;"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Nama perusahaan</label>
+          <input type="text" class="form-control" placeholder="">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Bentuk</label>
+            <select class="form-control">
+              <option value="PT">PT</option>
+              <option value="CV">CV</option>
+              <option value="UMKM">UMKM</option>
+              <option value="Yayasan">Yayasan</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Bidang usaha</label>
+            <input type="text" class="form-control" placeholder="">
+          </div>
+        </div>
+        <p class="helper-text">Setelah dibuat, tugaskan layanan dan tim pada halaman klien.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-primary" onclick="closeModal('modal-tambah-klien')">Simpan klien</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL BUAT INVOICE -->
+  <div id="modal-buat-invoice" class="modal-overlay hidden">
+    <div class="modal-content modal-invoice">
+      <div class="modal-header">
+        <h3>Buat invoice</h3>
+        <button class="modal-close" onclick="closeModal('modal-buat-invoice')"><i data-lucide="x" style="width:18px;"></i></button>
+      </div>
+      <div class="modal-body">
+        
+        <div class="invoice-grid-2">
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label>Klien</label>
+            <select class="form-control">
+              <option>—</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label>Jatuh tempo (hari)</label>
+            <input type="number" class="form-control" value="14">
+          </div>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 24px;">
+          <label>Jenis invoice</label>
+          <select class="form-control" style="width: 200px;">
+            <option>Tagihan penuh</option>
+          </select>
+        </div>
+
+        <div class="invoice-grid-3" style="margin-bottom: 12px;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Uraian</label>
+            <input type="text" class="form-control" value="—">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Jml</label>
+            <input type="number" class="form-control" value="1">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <label>Harga (Rp)</label>
+            <input type="number" class="form-control" value="0">
+          </div>
+          <button class="btn-outline" style="padding: 12px; border-radius: 8px; border: 1px solid var(--border-color); background: white;"><i data-lucide="x" style="width:16px;"></i></button>
+        </div>
+
+        <div class="input-action-row" style="margin-bottom: 24px;">
+          <select class="form-control" style="flex: 1;">
+            <option>Pilih layanan...</option>
+          </select>
+          <button class="btn-manual"><i data-lucide="plus" style="width:16px;"></i> Baris manual</button>
+        </div>
+
+        <div class="checkbox-group" style="margin-bottom: 24px;">
+          <input type="checkbox" id="ppn-check" checked>
+          <label for="ppn-check" style="font-size:14px; font-weight:500;">Kenakan PPN 11%</label>
+        </div>
+
+        <div class="invoice-summary">
+          <div class="summary-row">
+            <span>DPP</span>
+            <span>Rp 0</span>
+          </div>
+          <div class="summary-row">
+            <span>PPN 11%</span>
+            <span>Rp 0</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total tagihan</span>
+            <span>Rp 0</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-outline">Simpan draft</button>
+        <button class="btn-primary">Terbitkan ke klien</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    function login() {
+      document.getElementById('login-screen').classList.add('hidden');
+      document.getElementById('app-screen').classList.remove('hidden');
+      switchTab({ currentTarget: document.getElementById('nav-dashboard') }, 'dashboard');
+    }
+
+    function logout() {
+      document.getElementById('app-screen').classList.add('hidden');
+      document.getElementById('login-screen').classList.remove('hidden');
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).classList.remove('hidden');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.add('hidden');
+    }
+
+    function switchTab(e, tab) {
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      if(e && e.currentTarget) e.currentTarget.classList.add('active');
+      
+      const area = document.getElementById('content-area');
+      const greeting = document.getElementById('page-greeting');
+
+      // ==========================================
+      // RENDER DASHBOARD
+      // ==========================================
+      if (tab === 'dashboard') {
+        greeting.innerText = 'Hi, Manda!';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <div class="subtitle">YUKINO • SUPERUSER</div>
+              <h1>Selamat malam, Manda.</h1>
+              <p>Gambaran menyeluruh: laporan klien, tim, mitra, dan penagihan.</p>
+            </div>
+            <div class="page-header-actions">
+              <span class="date-text">13 Nov 2026</span>
+              <button class="btn-outline"><i data-lucide="refresh-cw" style="width:14px;"></i> Perbarui</button>
+            </div>
+          </div>
+
+          <div class="grid-top">
+            <div class="card-dark focus-card">
+              <div class="focus-content">
+                <div class="card-title">FOKUS HARI INI</div>
+                <h2>Prioritas teratas</h2>
+                <h2 style="margin-bottom: 24px;">—</h2>
+                <div class="focus-stats">
+                  <div class="focus-stat-item"><h3>—</h3><p>melewati SLA</p></div>
+                  <div class="focus-stat-item"><h3>—</h3><p>klien terlambat</p></div>
+                </div>
+                <button class="btn-focus"><i data-lucide="arrow-right" style="width:16px;"></i> Buka sekarang</button>
+              </div>
+              <div class="focus-footer">
+                <span>— laporan dalam proses</span>
+                <span>— dinyatakan sesuai</span>
+              </div>
+            </div>
+
+            <div class="card-white" style="padding: 24px;">
+              <div class="section-header"><div class="section-title">AKSES CEPAT</div></div>
+              <div class="quick-access-list">
+                <div class="quick-access-item">
+                  <div class="qa-icon"><i data-lucide="check" style="width:20px;"></i></div>
+                  <div class="qa-text"><h4>Antrean review</h4><p>Periksa laporan yang masuk</p></div>
+                  <i data-lucide="arrow-right" class="qa-arrow" style="width:16px;"></i>
+                </div>
+                <div class="quick-access-item">
+                  <div class="qa-icon"><i data-lucide="users" style="width:20px;"></i></div>
+                  <div class="qa-text"><h4>Klien</h4><p>Profil, layanan, dan dokumen</p></div>
+                  <i data-lucide="arrow-right" class="qa-arrow" style="width:16px;"></i>
+                </div>
+                <div class="quick-access-item">
+                  <div class="qa-icon"><i data-lucide="file-text" style="width:20px;"></i></div>
+                  <div class="qa-text"><h4>Invoice</h4><p>Buat, kirim, dan verifikasi</p></div>
+                  <i data-lucide="arrow-right" class="qa-arrow" style="width:16px;"></i>
+                </div>
+                <div class="quick-access-item">
+                  <div class="qa-icon"><i data-lucide="clock" style="width:20px;"></i></div>
+                  <div class="qa-text"><h4>Pengingat</h4><p>Atur dan kirim pengingat</p></div>
+                  <i data-lucide="arrow-right" class="qa-arrow" style="width:16px;"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="inbox" style="width:18px;"></i></div>
+              <div class="stat-label">Menunggu review</div>
+              <div class="stat-value">0</div>
+              <div class="stat-desc">Segera ditugaskan</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="file-text" style="width:18px;"></i></div>
+              <div class="stat-label">Sedang direview</div>
+              <div class="stat-value">0</div>
+              <div class="stat-desc">Semua dalam SLA</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon yellow"><i data-lucide="hourglass" style="width:18px;"></i></div>
+              <div class="stat-label">Klien terlambat kirim</div>
+              <div class="stat-value">0</div>
+              <div class="stat-desc">Pengingat perlu dikirim</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="receipt" style="width:18px;"></i></div>
+              <div class="stat-label">Invoice terbuka</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Belum lunas</div>
+            </div>
+          </div>
+
+          <div class="section-header">
+            <div class="section-title">KEUANGAN KLIEN • GABUNGAN</div>
+            <a href="#" class="section-link">Buka laporan keuangan</a>
+          </div>
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="trending-up" style="width:18px;"></i></div>
+              <div class="stat-label">Pendapatan klien</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Periode terkini tiap klien</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="briefcase" style="width:18px;"></i></div>
+              <div class="stat-label">Laba bersih</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">—% dari pendapatan</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="wallet" style="width:18px;"></i></div>
+              <div class="stat-label">Saldo kas akhir</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Total seluruh klien</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="book" style="width:18px;"></i></div>
+              <div class="stat-label">Piutang usaha klien</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Invoice usaha belum dibayar</div>
+            </div>
+          </div>
+
+          <div class="grid-mid">
+            <div class="card-white" style="padding: 24px;">
+              <div class="section-header">
+                <div class="section-title">STATUS LAPORAN • OKTOBER 2026</div>
+                <a href="#" class="section-link">Antrean review</a>
+              </div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Sebaran laporan periode berjalan</h3>
+              <div class="progress-bar-container"></div>
+              <div class="progress-legend">
+                <div class="legend-item"><div class="legend-dot" style="background:#D1D5DB;"></div> Belum dikirim <strong>0</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#F59E0B;"></div> Menunggu review <strong>0</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#EF4444;"></div> Sedang direview <strong>0</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#7F1D1D;"></div> Kontrol mutu <strong>0</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#B91C1C;"></div> Perlu perbaikan <strong>0</strong></div>
+                <div class="legend-item"><div class="legend-dot" style="background:#10B981;"></div> Sesuai <strong>0</strong></div>
+              </div>
+              <h3 style="font-size: 16px; font-weight: 600; margin-top: 32px; margin-bottom: 16px;">Tenggat terdekat</h3>
+              <div class="list-container">
+                <div class="list-item">
+                  <div class="list-date"><strong>—</strong><span>—</span></div>
+                  <div class="list-content">
+                    <h4>Belum ada data</h4>
+                    <p>—</p>
+                    <div class="progress-bar-small"><div class="progress-fill" style="width: 0%;"></div></div>
+                  </div>
+                  <span class="badge badge-gray">—</span>
+                </div>
+              </div>
+            </div>
+
+            <div>
+              <div class="card-white" style="padding: 24px; margin-bottom: 24px;">
+                <div class="section-header">
+                  <div class="section-title">PEMBAYARAN KLIEN</div>
+                  <a href="#" class="section-link">Semua</a>
+                </div>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Invoice terbaru</h3>
+                <div style="display:flex; gap:8px; margin-bottom:20px;">
+                  <span class="badge badge-gray">— lunas</span>
+                  <span class="badge badge-gray">— verifikasi</span>
+                  <span class="badge badge-gray">— terkirim</span>
+                </div>
+                <div class="list-container">
+                  <div class="list-item" style="flex-direction: column; gap: 8px; align-items: stretch;">
+                    <div style="display:flex; justify-content:space-between;">
+                      <h4>Belum ada data</h4>
+                      <span class="badge badge-gray">—</span>
+                    </div>
+                    <p>—</p>
+                    <div class="progress-bar-small"><div class="progress-fill" style="width: 0%;"></div></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card-white" style="padding: 24px;">
+                <div class="section-header"><div class="section-title">BEBAN KERJA</div></div>
+                <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Tim dan mitra</h3>
+                <div class="workload-item">
+                  <div class="workload-name">Tim A</div>
+                  <div class="workload-bar-bg"><div class="workload-bar-fill" style="width: 0%;"></div></div>
+                  <div class="workload-count">0</div>
+                </div>
+                <div class="workload-item">
+                  <div class="workload-name">Tim B</div>
+                  <div class="workload-bar-bg"><div class="workload-bar-fill" style="width: 0%;"></div></div>
+                  <div class="workload-count">0</div>
+                </div>
+                <div class="workload-item">
+                  <div class="workload-name">Mitra C</div>
+                  <div class="workload-bar-bg"><div class="workload-bar-fill" style="width: 0%;"></div></div>
+                  <div class="workload-count">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-mid">
+            <div class="card-white" style="padding: 24px;">
+              <div class="section-header">
+                <div class="section-title">PERLU PERHATIAN</div>
+                <span class="badge badge-gray">0</span>
+              </div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Daftar tindak lanjut</h3>
+              <div style="text-align:center; color:var(--text-muted); padding: 40px; background:#F9FAFB; border-radius:12px;">
+                Tidak ada tindak lanjut saat ini.
+              </div>
+            </div>
+
+            <div class="card-white" style="padding: 24px;">
+              <div class="section-header"><div class="section-title">AKTIVITAS TERKINI</div></div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Yang baru di portal</h3>
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-icon"><i data-lucide="activity" style="width:10px;"></i></div>
+                  <div class="timeline-content">
+                    <h4>Belum ada aktivitas</h4>
+                    <p>Semua aktivitas terbaru akan muncul di sini.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER ANTREAN REVIEW
+      // ==========================================
+      else if (tab === 'review') {
+        greeting.innerText = 'Antrean Review';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Antrean review</h1>
+              <p>Seluruh laporan klien menurut status. Klik baris untuk membuka ruang review.</p>
+            </div>
+          </div>
+          <div class="card-white">
+            <div class="filter-container">
+              <button class="filter-btn active" onclick="changeFilter(this)">Semua</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Menunggu</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Direview</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Rilis mutu</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Perbaikan klien</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Sesuai</button>
+              <button class="filter-btn" onclick="changeFilter(this)">Belum kirim</button>
+            </div>
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Klien</th><th>Periode</th><th>Status</th><th>Dikirim</th><th>SLA</th><th>Pra-periksa</th><th>Reviewer</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-state-row"><td colspan="7">Tidak ada data.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      // ==========================================
+      // RENDER PENGINGAT
+      // ==========================================
+      else if (tab === 'reminders') {
+        greeting.innerText = 'Pengingat';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Pengingat dan kalender kepatuhan</h1>
+              <p>Pengingat otomatis agar klien mengirim laporan tepat waktu dan menanggapi temuan.</p>
+            </div>
+            <button class="btn-danger"><i data-lucide="bell" style="width:16px;"></i> Kirim ke semua yang terlambat</button>
+          </div>
+
+          <div class="grid-reminder">
+            <div class="card-white" style="padding: 0; overflow: hidden;">
+              <div style="padding: 24px 24px 16px 24px;">
+                <h3 style="font-size: 18px; font-weight: 600;">Status pengingat per klien</h3>
+              </div>
+              <div class="table-responsive">
+                <table class="table-reminder">
+                  <thead>
+                    <tr>
+                      <th>Klien</th><th>Periode</th><th>Batas</th><th>Pengingat berikutnya</th><th></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="empty-state-row"><td colspan="5">Tidak ada data.</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card-white">
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Aturan pengingat</h3>
+              <div class="rule-item">
+                <input type="checkbox" class="rule-checkbox" checked>
+                <div class="rule-text"><h4>7 hari sebelum batas</h4><p>Portal, email</p></div>
+              </div>
+              <div class="rule-item">
+                <input type="checkbox" class="rule-checkbox" checked>
+                <div class="rule-text"><h4>3 hari sebelum batas</h4><p>Portal, email, WhatsApp</p></div>
+              </div>
+              <div class="rule-item">
+                <input type="checkbox" class="rule-checkbox" checked>
+                <div class="rule-text"><h4>1 hari sebelum batas</h4><p>Portal, WhatsApp</p></div>
+              </div>
+              <div class="rule-item">
+                <input type="checkbox" class="rule-checkbox" checked>
+                <div class="rule-text"><h4>Pada hari batas</h4><p>Portal, email, WhatsApp</p></div>
+              </div>
+              <div class="rule-item">
+                <input type="checkbox" class="rule-checkbox" checked>
+                <div class="rule-text"><h4>Setiap 3 hari setelah terlambat</h4><p>Portal, email, WhatsApp</p></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-white">
+            <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Log pengingat terkirim</h3>
+            <div class="log-list">
+              <div class="empty-state-row" style="text-align:center; padding: 40px; color:var(--text-muted);">
+                Belum ada log pengingat.
+              </div>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER PESAN
+      // ==========================================
+      else if (tab === 'messages') {
+        greeting.innerText = 'Pesan';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Pesan</h1>
+              <p>Percakapan dengan klien.</p>
+            </div>
+          </div>
+
+          <div class="chat-layout">
+            <div class="chat-sidebar">
+              <div class="chat-list">
+                <div class="chat-item active">
+                  <h4>—</h4>
+                  <p>Belum ada pesan terbaru.</p>
+                </div>
+                <div class="chat-item">
+                  <h4>—</h4>
+                  <p>Belum ada pesan terbaru.</p>
+                </div>
+                <div class="chat-item">
+                  <h4>—</h4>
+                  <p>Belum ada pesan terbaru.</p>
+                </div>
+                <div class="chat-item">
+                  <h4>—</h4>
+                  <p>Belum ada pesan terbaru.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="chat-window">
+              <div class="chat-header">
+                <h3>—</h3>
+              </div>
+              <div class="chat-body">
+                <div class="chat-bubble outgoing">
+                  <div class="chat-meta">— • —</div>
+                  <div class="chat-text">—</div>
+                </div>
+                <div class="chat-bubble incoming">
+                  <div class="chat-meta">— • —</div>
+                  <div class="chat-text">—</div>
+                </div>
+                <div class="empty-chat" style="margin-top: 40px;">
+                  <i data-lucide="message-square"></i>
+                  <p>Pilih percakapan atau mulai pesan baru.</p>
+                </div>
+              </div>
+              <div class="chat-input-area">
+                <label>Pesan baru</label>
+                <textarea class="chat-input" placeholder="Tulis pesan..."></textarea>
+                <button class="btn-send-chat">Kirim pesan</button>
+              </div>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER KLIEN
+      // ==========================================
+      else if (tab === 'klien') {
+        greeting.innerText = 'Klien';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Klien</h1>
+              <p>Daftar klien beserta status periode terkini, penugasan, dan tagihan.</p>
+            </div>
+            <button class="btn-primary" onclick="openModal('modal-tambah-klien')"><i data-lucide="plus" style="width:16px;"></i> Tambah klien</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div class="table-responsive">
+              <table class="client-table">
+                <thead>
+                  <tr>
+                    <th>Klien</th>
+                    <th>Paket</th>
+                    <th>Layanan yang digunakan</th>
+                    <th>PIC review</th>
+                    <th>Periode Okt 2026</th>
+                    <th>Tagihan terbuka</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-state-row">
+                    <td colspan="6">Tidak ada data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER LAYANAN & PENUGASAN
+      // ==========================================
+      else if (tab === 'layanan') {
+        greeting.innerText = 'Layanan dan Penugasan';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Layanan dan penugasan</h1>
+              <p>Katalog layanan dan penugasan tim serta mitra untuk setiap klien. Perubahan langsung berlaku pada antrean review.</p>
+            </div>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div style="padding: 24px 24px 0 24px;">
+              <div class="sub-tabs-container">
+                <button class="sub-tab active" onclick="switchSubTab('katalog')">Katalog layanan</button>
+                <button class="sub-tab" onclick="switchSubTab('paket')">Paket bulanan</button>
+                <button class="sub-tab" onclick="switchSubTab('penugasan')">Penugasan</button>
+              </div>
+            </div>
+            <div id="sub-tab-content"></div>
+          </div>
+        `;
+        switchSubTab('katalog');
+      }
+
+      // ==========================================
+      // RENDER TIM & MITRA
+      // ==========================================
+      else if (tab === 'tim') {
+        greeting.innerText = 'Tim dan Mitra';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Tim dan mitra</h1>
+              <p>Penugasan, beban kerja, dan honor mitra pekerjaan.</p>
+            </div>
+          </div>
+
+          <!-- Tabel Tim Internal -->
+          <div class="card-white card-tim">
+            <div class="card-tim-header">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0;">Tim internal</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="tim-table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Divisi</th>
+                    <th>Jabatan</th>
+                    <th style="text-align: center;">Klien dipegang</th>
+                    <th style="text-align: center;">Review aktif</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-state-row">
+                    <td colspan="5">Tidak ada data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Tabel Mitra Pekerjaan -->
+          <div class="card-white card-tim" style="margin-top: 24px;">
+            <div class="card-tim-header">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0;">Mitra pekerjaan</h3>
+            </div>
+            <div class="table-responsive">
+              <table class="tim-table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Bidang</th>
+                    <th style="text-align: center;">Review aktif</th>
+                    <th style="text-align: center;">Selesai</th>
+                    <th style="text-align: right;">Honor per review</th>
+                    <th style="text-align: right;">Total berjalan</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-state-row">
+                    <td colspan="6">Tidak ada data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Catatan Kaki -->
+          <p class="note-text">Mitra hanya melihat pekerjaan yang ditugaskan kepadanya. Hasil review mitra melewati pengecekan mutu tim Review & Mutu sebelum dirilis ke klien.</p>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER DOKUMEN
+      // ==========================================
+      else if (tab === 'dokumen') {
+        greeting.innerText = 'Dokumen';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Dokumen</h1>
+              <p>Kirim dokumen ke tim Akuntara dan unduh dokumen hasil kerja kami.</p>
+            </div>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+              <div class="filter-group">
+                <label>Klien</label>
+                <select class="form-select-sm">
+                  <option>—</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label>Kategori</label>
+                <select class="form-select-sm">
+                  <option>Dokumen sumber</option>
+                </select>
+                <button class="btn-primary" style="margin-left: 8px;"><i data-lucide="upload" style="width:16px;"></i> Unggah dokumen</button>
+              </div>
+            </div>
+
+            <!-- Tabel Dokumen -->
+            <div class="table-responsive">
+              <table class="table-dokumen">
+                <thead>
+                  <tr>
+                    <th>Nama berkas</th>
+                    <th>Kategori</th>
+                    <th>Tanggal</th>
+                    <th>Diunggah oleh</th>
+                    <th style="text-align: right;">Ukuran</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><i data-lucide="file" class="file-icon"></i> —</td>
+                    <td><span class="badge badge-gray">—</span></td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td><i data-lucide="file" class="file-icon"></i> —</td>
+                    <td><span class="badge badge-outline">—</span></td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td><i data-lucide="file" class="file-icon"></i> —</td>
+                    <td><span class="badge badge-gray">—</span></td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Catatan Kaki -->
+          <p class="note-text">Pada versi demo, hanya nama berkas yang tercatat. Penyimpanan terenkripsi di server tersedia setelah integrasi dengan backend.</p>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER INVOICE
+      // ==========================================
+      else if (tab === 'invoice') {
+        greeting.innerText = 'Invoice';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Invoice</h1>
+              <p>Buat, kirim, dan pantau tagihan klien.</p>
+            </div>
+            <button class="btn-primary" onclick="openModal('modal-buat-invoice')"><i data-lucide="plus" style="width:16px;"></i> Buat invoice</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div class="table-responsive">
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th>No. invoice</th>
+                    <th>Klien</th>
+                    <th>Tanggal</th>
+                    <th>Jatuh tempo</th>
+                    <th style="text-align: right;">Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="empty-state-row">
+                    <td colspan="6">Tidak ada data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      // ==========================================
+      // RENDER KEUANGAN YUKINO
+      // ==========================================
+      else if (tab === 'keuangan_yukino') {
+        greeting.innerText = 'Keuangan Yukino';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Keuangan Yukino</h1>
+              <p>Pemasukan, pengeluaran, dan laporan keuangan PT Manda Grup Nusantara. Hanya dapat dilihat Managing Director.</p>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center;">
+              <span style="font-size:13px; color:var(--text-muted);">Periode</span>
+              <select class="form-select-sm" style="min-width:150px;">
+                <option>Oktober 2026</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Tabs Keuangan -->
+          <div class="keuangan-tabs">
+            <button class="keuangan-tab active" onclick="switchKeuanganTab(this, 'ringkasan')">Ringkasan</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'pemasukan')">Pemasukan</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'pengeluaran')">Pengeluaran</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'laba_rugi')">Laba rugi</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'arus_kas')">Arus kas</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'neraca')">Neraca</button>
+            <button class="keuangan-tab" onclick="switchKeuanganTab(this, 'pajak')">Pajak</button>
+          </div>
+
+          <div id="keuangan-content">
+            <!-- Rendered by switchKeuanganTab -->
+          </div>
+        `;
+        // Render default tab
+        switchKeuanganTab(null, 'ringkasan');
+      }
+
+      // ==========================================
+      // RENDER KEUANGAN KLIEN
+      // ==========================================
+      else if (tab === 'keuangan_klien') {
+        greeting.innerText = 'Keuangan Klien';
+        area.innerHTML = `
+          <div class="page-header">
+            <div class="page-header-title">
+              <h1>Keuangan klien</h1>
+              <p>Laporan keuangan seluruh klien. Anda dapat mengatur siapa yang boleh melihat data keuangan tiap klien.</p>
+            </div>
+          </div>
+
+          <!-- Filter Chips (Klien) -->
+          <div class="client-filters">
+            <button class="client-filter-btn active" onclick="changeClientFilter(this)">Gabungan</button>
+            <button class="client-filter-btn" onclick="changeClientFilter(this)">PT Maju Bersama Nusantara</button>
+            <button class="client-filter-btn" onclick="changeClientFilter(this)">CV Dapur Kopi Lembang</button>
+            <button class="client-filter-btn" onclick="changeClientFilter(this)">PT Sinar Teknik Prima</button>
+            <button class="client-filter-btn" onclick="changeClientFilter(this)">CV Berkah Tani Mandiri</button>
+          </div>
+
+          <!-- Sub Tabs -->
+          <div class="keuangan-tabs" style="display:inline-flex; margin-bottom:24px;">
+            <button class="keuangan-tab" onclick="switchKeuanganKlienTab(this, 'laporan')">Laporan keuangan</button>
+            <button class="keuangan-tab active" onclick="switchKeuanganKlienTab(this, 'akses')">Hak akses</button>
+          </div>
+
+          <div id="keuangan-klien-content">
+             <!-- Rendered by switchKeuanganKlienTab -->
+          </div>
+        `;
+        // Render default tab
+        switchKeuanganKlienTab(null, 'akses');
+      }
+    }
+
+    function changeFilter(btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function changeClientFilter(btn) {
+      document.querySelectorAll('.client-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // ==========================================
+    // SUB TAB LOGIC UNTUK LAYANAN
+    // ==========================================
+    function switchSubTab(subTab) {
+      document.querySelectorAll('.sub-tab').forEach(btn => btn.classList.remove('active'));
+      if(event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+      } else {
+        const buttons = document.querySelectorAll('.sub-tab');
+        if(subTab === 'katalog') buttons[0].classList.add('active');
+        if(subTab === 'paket') buttons[1].classList.add('active');
+        if(subTab === 'penugasan') buttons[2].classList.add('active');
+      }
+
+      const content = document.getElementById('sub-tab-content');
+      
+      if (subTab === 'katalog') {
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table-layanan">
+              <thead>
+                <tr>
+                  <th style="width: 50px;">Kode</th>
+                  <th>Layanan</th>
+                  <th>Divisi</th>
+                  <th>Siklus</th>
+                  <th style="text-align: right;">Harga dasar</th>
+                  <th>SLA</th>
+                  <th style="text-align: center;">Klien aktif</th>
+                  <th>Tim yang menangani</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-state-row"><td colspan="8">Tidak ada data.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } 
+      else if (subTab === 'paket') {
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table-layanan">
+              <thead>
+                <tr>
+                  <th>Paket</th>
+                  <th>Layanan termasuk</th>
+                  <th style="text-align: right;">Harga / bulan</th>
+                  <th style="text-align: right;">Hemat</th>
+                  <th>Klien</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-state-row"><td colspan="5">Tidak ada data.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      } 
+      else if (subTab === 'penugasan') {
+        content.innerHTML = `
+          <div class="table-responsive">
+            <table class="table-layanan">
+              <thead>
+                <tr>
+                  <th>Klien</th>
+                  <th>Layanan</th>
+                  <th>PIC tim</th>
+                  <th>Mitra</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="empty-state-row"><td colspan="4">Tidak ada data.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        `;
+      }
+      
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // SUB TAB LOGIC UNTUK KEUANGAN YUKINO
+    // ==========================================
+    function switchKeuanganTab(btn, tabName) {
+      document.querySelectorAll('.keuangan-tab').forEach(t => t.classList.remove('active'));
+      if(btn) {
+        btn.classList.add('active');
+      } else {
+        const buttons = document.querySelectorAll('.keuangan-tab');
+        if(tabName === 'ringkasan') buttons[0].classList.add('active');
+      }
+
+      const content = document.getElementById('keuangan-content');
+
+      if (tabName === 'ringkasan') {
+        content.innerHTML = `
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="trending-up" style="width:18px;"></i></div>
+              <div class="stat-label">Pendapatan</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Oktober 2026</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="briefcase" style="width:18px;"></i></div>
+              <div class="stat-label">Laba bersih</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">—% dari pendapatan</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="wallet" style="width:18px;"></i></div>
+              <div class="stat-label">Saldo kas akhir</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Awal Rp -</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="book" style="width:18px;"></i></div>
+              <div class="stat-label">Piutang usaha</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Posisi akhir Okt</div>
+            </div>
+          </div>
+
+          <div class="grid-mid">
+            <div class="card-white">
+              <div class="section-header">
+                <div class="section-title">KINERJA</div>
+              </div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 24px;">Pendapatan dan beban per bulan</h3>
+              
+              <div class="chart-placeholder">
+                <div class="bar-group">
+                  <div class="bars">
+                    <div class="bar-income" style="height: 40%;"></div>
+                    <div class="bar-expense" style="height: 30%;"></div>
+                  </div>
+                  <span class="chart-label">Jul</span>
+                </div>
+                <div class="bar-group">
+                  <div class="bars">
+                    <div class="bar-income" style="height: 45%;"></div>
+                    <div class="bar-expense" style="height: 35%;"></div>
+                  </div>
+                  <span class="chart-label">Agu</span>
+                </div>
+                <div class="bar-group">
+                  <div class="bars">
+                    <div class="bar-income" style="height: 50%;"></div>
+                    <div class="bar-expense" style="height: 40%;"></div>
+                  </div>
+                  <span class="chart-label">Sep</span>
+                </div>
+                <div class="bar-group">
+                  <div class="bars">
+                    <div class="bar-income" style="height: 60%;"></div>
+                    <div class="bar-expense" style="height: 20%;"></div>
+                  </div>
+                  <span class="chart-label">Okt</span>
+                </div>
+                <div class="bar-group">
+                  <div class="bars">
+                    <div class="bar-income" style="height: 10%;"></div>
+                    <div class="bar-expense" style="height: 5%;"></div>
+                  </div>
+                  <span class="chart-label">Nov</span>
+                </div>
+              </div>
+
+              <div style="display:flex; gap:16px; margin-top:16px; font-size:12px; color:var(--text-muted);">
+                <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; background:var(--text-dark); border-radius:50%;"></div> Pendapatan</div>
+                <div style="display:flex; align-items:center; gap:6px;"><div style="width:10px; height:10px; background:#9CA3AF; border-radius:50%;"></div> Beban dan pajak</div>
+              </div>
+              <p style="font-size:12px; color:var(--text-muted); margin-top:16px; border-top:1px solid var(--border-color); padding-top:16px;">Bulan November masih berjalan: beban gaji dan honor belum dicatat.</p>
+            </div>
+
+            <div class="card-white">
+              <div class="section-header">
+                <div class="section-title">PIUTANG</div>
+              </div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Umur piutang saat ini</h3>
+              
+              <div class="list-container">
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Belum jatuh tempo</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Terlambat 1 sampai 30 hari</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Terlambat 31 sampai 60 hari</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Terlambat lebih dari 60 hari</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border-color); font-weight:600;">
+                  <span>Total piutang</span>
+                  <span>Rp -</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-mid">
+            <div class="card-white" style="padding: 0; overflow: hidden;">
+              <div style="padding: 24px 24px 16px 24px; display:flex; justify-content:space-between; align-items:center;">
+                <h3 style="font-size: 18px; font-weight: 600; margin: 0;">Pendapatan per klien</h3>
+                <span style="font-size:12px; color:var(--text-muted);">Jul sampai Nov 2026</span>
+              </div>
+              <div class="table-responsive">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Klien</th>
+                      <th style="text-align: right;">Pendapatan</th>
+                      <th style="text-align: right;">Porsi</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>—</td><td style="text-align: right;">0</td><td style="text-align: right;">0%</td></tr>
+                    <tr><td>—</td><td style="text-align: right;">0</td><td style="text-align: right;">0%</td></tr>
+                    <tr><td>—</td><td style="text-align: right;">0</td><td style="text-align: right;">0%</td></tr>
+                    <tr><td>—</td><td style="text-align: right;">0</td><td style="text-align: right;">0%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="card-white">
+              <div class="section-header">
+                <div class="section-title">PENDAPATAN BERULANG</div>
+              </div>
+              <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 16px;">Paket langganan aktif</h3>
+              
+              <div class="list-container">
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Pendapatan berulang bulanan (MRR)</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Proyeksi tahunan (ARR)</span>
+                  <strong>Rp -</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Klien berlangganan</span>
+                  <strong>0</strong>
+                </div>
+                <div class="list-item" style="justify-content: space-between; align-items: center; padding-bottom: 12px;">
+                  <span>Rata-rata per klien</span>
+                  <strong>Rp -</strong>
+                </div>
+              </div>
+              <p style="font-size:12px; color:var(--text-muted); margin-top:16px;">Dihitung dari harga paket klien aktif, belum termasuk layanan tambahan dan proyek.</p>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      else if (tabName === 'pemasukan') {
+        content.innerHTML = `
+          <div class="page-header" style="margin-bottom:16px;">
+             <div></div>
+             <button class="btn-primary"><i data-lucide="plus" style="width:16px;"></i> Buat invoice</button>
+          </div>
+
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="receipt" style="width:18px;"></i></div>
+              <div class="stat-label">Total ditagihkan</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">0 invoice terbit</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="check-circle" style="width:18px;"></i></div>
+              <div class="stat-label">Sudah diterima</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Kas masuk dari klien</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="hourglass" style="width:18px;"></i></div>
+              <div class="stat-label">Belum dibayar</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Termasuk menunggu verifikasi</div>
+            </div>
+            <div class="stat-card yellow">
+              <div class="stat-icon yellow"><i data-lucide="alert-circle" style="width:18px;"></i></div>
+              <div class="stat-label">Terlambat</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Perlu pengingat tagihan</div>
+            </div>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div class="table-responsive">
+              <table class="invoice-table">
+                <thead>
+                  <tr>
+                    <th>No. invoice</th>
+                    <th>Klien</th>
+                    <th>Tanggal</th>
+                    <th>Jatuh tempo</th>
+                    <th>Dibayar</th>
+                    <th style="text-align: right;">Total</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td style="text-align: right;">—</td>
+                    <td><span class="badge badge-gray">—</span></td>
+                  </tr>
+                  <tr>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td>—</td>
+                    <td style="text-align: right;">—</td>
+                    <td><span class="badge badge-gray">—</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      else if (tabName === 'pengeluaran') {
+        content.innerHTML = `
+          <div class="page-header" style="margin-bottom:16px;">
+             <div></div>
+             <button class="btn-primary"><i data-lucide="plus" style="width:16px;"></i> Catat pengeluaran</button>
+          </div>
+
+          <div class="grid-4">
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="briefcase" style="width:18px;"></i></div>
+              <div class="stat-label">Total pengeluaran</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Juli sampai November 2026</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="users" style="width:18px;"></i></div>
+              <div class="stat-label">Gaji, honor, dan mitra</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Biaya tenaga kerja</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="file-text" style="width:18px;"></i></div>
+              <div class="stat-label">Pajak dibayar</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">PPh Final dan PPN</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon gray"><i data-lucide="settings" style="width:18px;"></i></div>
+              <div class="stat-label">Peralatan</div>
+              <div class="stat-value">Rp -</div>
+              <div class="stat-desc">Dicatat sebagai aset</div>
+            </div>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tanggal</th>
+                    <th>Kategori</th>
+                    <th>Keterangan</th>
+                    <th style="text-align: right;">Jumlah</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td>—</td><td>—</td><td>—</td><td style="text-align: right;">—</td></tr>
+                  <tr><td>—</td><td>—</td><td>—</td><td style="text-align: right;">—</td></tr>
+                  <tr><td>—</td><td>—</td><td>—</td><td style="text-align: right;">—</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      else if (tabName === 'laba_rugi') {
+        content.innerHTML = `
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <button class="btn-outline">Unduh CSV</button>
+            <button class="btn-outline">Cetak atau simpan PDF</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div style="text-align: center; padding: 40px 20px 20px 20px;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">PT MANDA GRUP NUSANTARA</p>
+              <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Laporan laba rugi</h2>
+              <p style="font-size: 13px; color: var(--text-muted);">Juli sampai November 2026 · dalam Rupiah · data contoh untuk demo</p>
+            </div>
+            
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr style="background: #F9FAFB;">
+                    <th style="width: 30%;"></th>
+                    <th style="text-align: right;">Jul</th>
+                    <th style="text-align: right;">Agu</th>
+                    <th style="text-align: right;">Sep</th>
+                    <th style="text-align: right;">Okt</th>
+                    <th style="text-align: right;">Nov *</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="7" style="background: #F9FAFB; font-weight: 600; color: var(--text-dark);">Pendapatan</td></tr>
+                  <tr>
+                    <td>Jasa langganan dan layanan bulanan</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td>Jasa berbasis proyek (DP dan pelunasan)</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      else if (tabName === 'arus_kas') {
+        content.innerHTML = `
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <button class="btn-outline">Unduh CSV</button>
+            <button class="btn-outline">Cetak atau simpan PDF</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div style="text-align: center; padding: 40px 20px 20px 20px;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">PT MANDA GRUP NUSANTARA</p>
+              <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Laporan arus kas</h2>
+              <p style="font-size: 13px; color: var(--text-muted);">Juli sampai November 2026 · dalam Rupiah · data contoh untuk demo</p>
+            </div>
+            
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr style="background: #F9FAFB;">
+                    <th style="width: 30%;"></th>
+                    <th style="text-align: right;">Jul</th>
+                    <th style="text-align: right;">Agu</th>
+                    <th style="text-align: right;">Sep</th>
+                    <th style="text-align: right;">Okt</th>
+                    <th style="text-align: right;">Nov *</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="7" style="background: #F9FAFB; font-weight: 600; color: var(--text-dark);">Aktivitas operasi</td></tr>
+                  <tr>
+                    <td>Penerimaan dari klien</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td>Pembayaran beban operasional</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      else if (tabName === 'neraca') {
+        content.innerHTML = `
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <button class="btn-outline">Unduh CSV</button>
+            <button class="btn-outline">Cetak atau simpan PDF</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div style="text-align: center; padding: 40px 20px 20px 20px;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">PT MANDA GRUP NUSANTARA</p>
+              <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Neraca</h2>
+              <p style="font-size: 13px; color: var(--text-muted);">Juli sampai November 2026 · dalam Rupiah · data contoh untuk demo</p>
+            </div>
+            
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr style="background: #F9FAFB;">
+                    <th style="width: 30%;"></th>
+                    <th style="text-align: right;">Jul</th>
+                    <th style="text-align: right;">Agu</th>
+                    <th style="text-align: right;">Sep</th>
+                    <th style="text-align: right;">Okt</th>
+                    <th style="text-align: right;">Nov *</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="7" style="background: #F9FAFB; font-weight: 600; color: var(--text-dark);">Aset</td></tr>
+                  <tr>
+                    <td>Kas dan bank</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td>Piutang usaha</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      else if (tabName === 'pajak') {
+        content.innerHTML = `
+          <div style="display:flex; gap:12px; margin-bottom:24px;">
+            <button class="btn-outline">Unduh CSV</button>
+            <button class="btn-outline">Cetak atau simpan PDF</button>
+          </div>
+
+          <div class="card-white" style="padding: 0; overflow: hidden;">
+            <div style="text-align: center; padding: 40px 20px 20px 20px;">
+              <p style="font-size: 12px; font-weight: 600; color: var(--text-muted); letter-spacing: 1px; margin-bottom: 8px;">PT MANDA GRUP NUSANTARA</p>
+              <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 12px;">Ringkasan pajak</h2>
+              <p style="font-size: 13px; color: var(--text-muted);">Juli sampai November 2026 · dalam Rupiah · data contoh untuk demo</p>
+            </div>
+            
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr style="background: #F9FAFB;">
+                    <th style="width: 30%;"></th>
+                    <th style="text-align: right;">Jul</th>
+                    <th style="text-align: right;">Agu</th>
+                    <th style="text-align: right;">Sep</th>
+                    <th style="text-align: right;">Okt</th>
+                    <th style="text-align: right;">Nov *</th>
+                    <th style="text-align: right;">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr><td colspan="7" style="background: #F9FAFB; font-weight: 600; color: var(--text-dark);">PPh Final 0,5% (dasar: pendapatan)</td></tr>
+                  <tr>
+                    <td>Pendapatan (dasar pengenaan)</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                  <tr>
+                    <td>PPh Final terutang</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                    <td style="text-align: right;">—</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    // ==========================================
+    // SUB TAB LOGIC UNTUK KEUANGAN KLIEN
+    // ==========================================
+    function switchKeuanganKlienTab(btn, tabName) {
+      document.querySelectorAll('.keuangan-tab').forEach(t => t.classList.remove('active'));
+      if(btn) {
+        btn.classList.add('active');
+      } else {
+        const buttons = document.querySelectorAll('.keuangan-tab');
+        if(tabName === 'laporan') buttons[0].classList.add('active');
+        if(tabName === 'akses') buttons[1].classList.add('active');
+      }
+
+      const content = document.getElementById('keuangan-klien-content');
+
+      if (tabName === 'laporan') {
+        content.innerHTML = `
+          <div class="card-white" style="text-align: center; padding: 80px;">
+            <i data-lucide="bar-chart" style="width:64px; height:64px; color:#D1D5DB; margin-bottom:20px;"></i>
+            <h2 style="margin-bottom:8px;">Laporan Keuangan Gabungan</h2>
+            <p style="color:var(--text-muted);">Pilih klien untuk melihat laporan keuangan detail.</p>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      else if (tabName === 'akses') {
+        content.innerHTML = `
+          <!-- Tabel Hak Akses -->
+          <div class="card-white" style="padding: 0; overflow: hidden; margin-bottom: 24px;">
+            <div style="padding: 24px 24px 16px 24px; display:flex; justify-content:space-between; align-items:center;">
+              <h3 style="font-size: 18px; font-weight: 600; margin: 0;">Hak akses data keuangan klien</h3>
+              <span style="font-size: 12px; color: var(--text-muted);">Managing Director selalu memiliki akses</span>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="akses-table">
+                <thead>
+                  <tr>
+                    <th>Tim dan mitra</th>
+                    <th style="text-align: center;">PT Maju Bersama Nusantara</th>
+                    <th style="text-align: center;">CV Dapur Kopi Lembang</th>
+                    <th style="text-align: center;">PT Sinar Teknik Prima</th>
+                    <th style="text-align: center;">CV Berkah Tani Mandiri</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Manda <span>Managing Director</span></td>
+                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                    <td style="text-align: center;"><input type="checkbox" checked disabled></td>
+                  </tr>
+                  <tr>
+                    <td>Rina Kusuma <span>Pembukuan</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                  <tr>
+                    <td>Bagas Santoso <span>Perpajakan</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                  <tr>
+                    <td>Maya Lestari <span>Review & Mutu</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                  <tr>
+                    <td>Dewi Anggraeni <span>Admin & Penagihan</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                  <tr>
+                    <td>Bima Hartono, CPA <span>Mitra Akuntan Publik</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                  <tr>
+                    <td>Laras Wibisono <span>Mitra Konsultan Pajak</span></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                    <td style="text-align: center;"><input type="checkbox"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Log Perubahan -->
+          <div class="card-white">
+            <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 24px; color: var(--text-muted); letter-spacing: 1px;">LOG PERUBAHAN AKSES</h3>
+            
+            <div class="log-timeline">
+              <div class="log-timeline-item">
+                <div class="log-icon"><i data-lucide="shield" style="width:16px;"></i></div>
+                <div class="log-text">
+                  <h4>Memberi akses data keuangan PT Maju Bersama Nusantara kepada Rina Kusuma</h4>
+                  <p>Manda · —</p>
+                </div>
+              </div>
+              <div class="log-timeline-item">
+                <div class="log-icon"><i data-lucide="shield" style="width:16px;"></i></div>
+                <div class="log-text">
+                  <h4>Memberi akses data keuangan PT Sinar Teknik Prima kepada Rina Kusuma</h4>
+                  <p>Manda · —</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="note-text">Klien melihat daftar orang yang memiliki akses pada halaman Profil usaha dan menerima notifikasi saat akses berubah.</p>
+        `;
+        lucide.createIcons();
+      }
+    }
+  </script>
+</body>
+</html>
